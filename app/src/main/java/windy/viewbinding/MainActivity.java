@@ -16,16 +16,15 @@ public class MainActivity extends AppCompatActivity {
 
     @BindView(R.id.tv_hello)
     public TextView tvHello;
+    @BindView(R.id.imv)
+    public ImageView imv;
+    @BindResource(resourceId = R.string.app_name)
+    public String name;
     @OnClick(R.id.btn_show_toast)
     public void showToast(){
         Toast.makeText(this, "Hello Windy.F",Toast.LENGTH_SHORT).show();
         imv.setImageResource(R.mipmap.ic_launcher);
     }
-    @BindView(R.id.imv)
-    public ImageView imv;
-
-    @BindResource(resourceId = R.string.app_name)
-    public String name;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {

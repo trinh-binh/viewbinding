@@ -1,6 +1,7 @@
 package windy.viewbinding.binder;
 
 import android.app.Activity;
+import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -40,7 +41,7 @@ public class ViewBinder {
                 if (field.isAnnotationPresent(BindView.class)) {
                     Log.d("windy.f", " field type : " + field.getType());
                     BindView bindView = field.getAnnotation(BindView.class);
-                    if (bindView == null) return;
+                    if (bindView == null) continue;
                     int viewId = bindView.value();
                     View view = activity.findViewById(viewId);
                     field.set(activity, view);
@@ -50,7 +51,7 @@ public class ViewBinder {
             for (final Method method : methods) {
                 if (method.isAnnotationPresent(OnClick.class)) {
                     OnClick bindView = method.getAnnotation(OnClick.class);
-                    if (bindView == null) return;
+                    if (bindView == null) continue;
                     int viewId = bindView.value();
                     View view = activity.findViewById(viewId);
                     if (view instanceof Button) {
@@ -74,6 +75,10 @@ public class ViewBinder {
         } catch (IllegalAccessException e) {
             e.printStackTrace();
         }
+    }
+
+    public void bindView(Fragment fragment, View view){
+
     }
 
 }
