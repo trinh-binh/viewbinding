@@ -1,2 +1,2 @@
 # viewbinding
-- Viewbinding without reflecetion (will be updated)
+- Viewbinding with reflection & annotation
