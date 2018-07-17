@@ -35,25 +35,34 @@ public class ViewBinder {
     }
 
     public void bindView(final Activity activity) {
+        View view = activity.findViewById(android.R.id.content);
+        bind(activity, view);
+    }
+
+    public void bindView(Fragment fragment, View view) {
+        bind(fragment, view);
+    }
+
+    private void bind(final Object objectHolder, View viewHolder){
         try {
-            Field[] fields = activity.getClass().getDeclaredFields();
+            Field[] fields = objectHolder.getClass().getDeclaredFields();
             for (Field field : fields) {
                 if (field.isAnnotationPresent(BindView.class)) {
                     Log.d("windy.f", " field type : " + field.getType());
                     BindView bindView = field.getAnnotation(BindView.class);
                     if (bindView == null) continue;
                     int viewId = bindView.value();
-                    View view = activity.findViewById(viewId);
-                    field.set(activity, view);
+                    View view = viewHolder.findViewById(viewId);
+                    field.set(objectHolder, view);
                 }
             }
-            Method[] methods = activity.getClass().getDeclaredMethods();
+            Method[] methods = objectHolder.getClass().getDeclaredMethods();
             for (final Method method : methods) {
                 if (method.isAnnotationPresent(OnClick.class)) {
                     OnClick bindView = method.getAnnotation(OnClick.class);
                     if (bindView == null) continue;
                     int viewId = bindView.value();
-                    View view = activity.findViewById(viewId);
+                    View view = viewHolder.findViewById(viewId);
                     if (view instanceof Button) {
                         Log.d("windy.f", " Click on button: " + viewId);
                     }
@@ -61,7 +70,7 @@ public class ViewBinder {
                         @Override
                         public void onClick(View v) {
                             try {
-                                method.invoke(activity, null);
+                                method.invoke(objectHolder, null);
                             } catch (IllegalAccessException e) {
                                 e.printStackTrace();
                             } catch (InvocationTargetException e) {
@@ -75,10 +84,6 @@ public class ViewBinder {
         } catch (IllegalAccessException e) {
             e.printStackTrace();
         }
-    }
-
-    public void bindView(Fragment fragment, View view){
-
     }
 
 }
